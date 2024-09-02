@@ -11,7 +11,7 @@ const DEFAULT_GRID_SIZE = 16;
 let gridSize = DEFAULT_GRID_SIZE;
 let random = false;
 let darkening = false;
-
+const opacityArray = [];
 
 
 function randomRGB(){
@@ -31,13 +31,13 @@ function createGrid(gridSize,random,darkening){
     }
 
     for (let i = 0; i < gridSize; i++){
-
+        opacityArray[i] = [];
         const row = document.createElement('div');
         row.classList.add('row');
         row.style.display = 'flex';
 
         for (let j = 0; j < gridSize; j++){
-
+            (darkening) ? opacityArray[i][j] = 0.1 : opacityArray[i][j] = 1;
             let color;
             (random) ? color = randomRGB() : color = 'black';
             
@@ -46,7 +46,10 @@ function createGrid(gridSize,random,darkening){
             grid.style.cssText = ['border: 1px solid black;flex: 1 1 auto;aspect-ratio: 1/1;']
             
             grid.addEventListener('mouseover', (e)=>{
-                e.target.style.opacity = 1;
+                e.target.style.opacity = opacityArray[i][j];
+                if (opacityArray[i][j] < 1){
+                    opacityArray[i][j] += .1;
+                }
                 e.target.style.backgroundColor = color;   
             });
 
@@ -64,8 +67,10 @@ newGridButton.addEventListener('click', (e)=>{
             gridSize = DEFAULT_GRID_SIZE;
         }else if (gridSize > 64){
             alert('Grid size is limited to 64 grid per side')
+        }else if (gridSize < 1){
+            alert('Grid size cannot be a negative number');
         }
-    }while(gridSize > 64);
+    }while(gridSize > 64 || gridSize < 1);
     createGrid(gridSize, random, darkening);
 });
 
@@ -81,5 +86,9 @@ darkeningButton.addEventListener('click', ()=>{
 })
 
 
+
 createGrid(gridSize, random, darkening);
+
+
+
 
