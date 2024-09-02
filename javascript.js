@@ -62,9 +62,8 @@ function createGrid(gridSize,random,darkening){
 newGridButton.addEventListener('click', (e)=>{
     do{
         gridSize = prompt("Enter new grid size");
-        
         if (gridSize === null || gridSize === ''){;
-            gridSize = DEFAULT_GRID_SIZE;
+            return;
         }else if (gridSize > 64){
             alert('Grid size is limited to 64 grid per side')
         }else if (gridSize < 1){
